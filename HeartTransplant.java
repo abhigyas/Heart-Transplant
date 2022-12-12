@@ -97,16 +97,16 @@ public class HeartTransplant {
      * 
      */
     public void readSurvivabilityByAge (int numberOfLines) {
-       survivabilityByAge = new SurvivabilityByAge[numberOfLines]; // returns an error, cant convert into array
-       int age;
+       SurvivabilityByAge survivabilityByAge = new SurvivabilityByAge(); 
        int years;
+       int age;
        double rate;
        for(int i = 0; i<numberOfLines; i++){
         age = StdIn.readInt();
         years = StdIn.readInt();
         rate = StdIn.readDouble();
-        survivabilityByAge[i]= new SurvivabilityByAge(age,years,rate); // this returns an error, constructor is undefined even though its literally called above
-       }
+        survivabilityByAge.addData(age, years, rate);
+    }
         // WRITE YOUR CODE HERE
     }
 
@@ -121,13 +121,15 @@ public class HeartTransplant {
      * 
      */
     public void readSurvivabilityByCause (int numberOfLines) {
-        survivabilityByCause = new SurvivabilityByCause[numberOfLines]; // returns an error, cant convert into array
+       survivabilityByCause = new SurvivabilityByCause(); 
        int cause;
        int years;
+       double rate;
        for(int i = 0; i<numberOfLines; i++){
         cause = StdIn.readInt();
         years = StdIn.readInt();
-        survivabilityByCause[i]= new SurvivabilityByAge(cause,years); // this returns an error, constructor is undefined even though its literally called above
+        rate = StdIn.readDouble();
+        survivabilityByCause.addData(cause, years, rate);
        }
         // WRITE YOUR CODE HERE
     }
