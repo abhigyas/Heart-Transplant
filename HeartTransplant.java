@@ -1,5 +1,3 @@
-import java.util.IntSummaryStatistics;
-
 /**
  * 
  * HeartTransplant class
@@ -67,13 +65,13 @@ public class HeartTransplant {
      */
     public void readPatients (int numberOfLines) {
         patients = new Patient[numberOfLines];
-        int id;
-        int ethnicity;
-        int gender;
-        int age;
-        int cause;
-        int urgency;
-        int stateOfHealth;
+        int id = 0 ;
+        int ethnicity = 0;
+        int gender = 0;
+        int age = 0;
+        int cause = 0;
+        int urgency = 0;
+        int stateOfHealth = 0;
         for(int i = 0; i < numberOfLines ; i++){
             id = StdIn.readInt();
             ethnicity = StdIn.readInt();
@@ -97,15 +95,15 @@ public class HeartTransplant {
      * 
      */
     public void readSurvivabilityByAge (int numberOfLines) {
-       SurvivabilityByAge survivabilityByAge = new SurvivabilityByAge(); 
-       int years;
-       int age;
-       double rate;
+    this.survivabilityByAge = new SurvivabilityByAge(); 
+       int years = 0 ;
+       int age = 0 ;
+       double rate = 0.0;
        for(int i = 0; i<numberOfLines; i++){
         age = StdIn.readInt();
         years = StdIn.readInt();
         rate = StdIn.readDouble();
-        survivabilityByAge.addData(age, years, rate);
+        this.survivabilityByAge.addData(age, years, rate);
     }
         // WRITE YOUR CODE HERE
     }
@@ -121,15 +119,15 @@ public class HeartTransplant {
      * 
      */
     public void readSurvivabilityByCause (int numberOfLines) {
-       survivabilityByCause = new SurvivabilityByCause(); 
-       int cause;
-       int years;
-       double rate;
+       this.survivabilityByCause = new SurvivabilityByCause(); 
+       int cause = 0;
+       int years = 0;
+       double rate = 0.0;
        for(int i = 0; i<numberOfLines; i++){
         cause = StdIn.readInt();
         years = StdIn.readInt();
         rate = StdIn.readDouble();
-        survivabilityByCause.addData(cause, years, rate);
+        this.survivabilityByCause.addData(cause, years, rate);
        }
         // WRITE YOUR CODE HERE
     }
@@ -146,22 +144,21 @@ public class HeartTransplant {
      * parameter age.
      */ 
     public Patient[] getPatientsWithAgeAbove(int age) {
-        int counter = 0;
-        int x = 0;
-        for(int i = 0; i < patients.length;i++){
-            if(patients[i].getAge() >= age) {
-                counter++;
-            }
+        int count = 0;
+        for(int i = 0; i < patients.length; i++){
+            if(patients[i].getAge() >= age)
+            count++;
         }
-        if(counter == 0){
+
+        if(count == 0)
             return null;
-        }
         else{
-            Patient[] array = new Patient[counter];
-            for(int i = 0;i<patients.length;i++){
+            Patient[] array = new Patient[count];
+            int index = 0;
+            for(int i = 0; i < patients.length; i++){
                 if(patients[i].getAge() >= age){
-                    array[x] = patients[i];
-                    x++;
+                    array[index] = patients[i];
+                    index++;
                 }
             }
             return array;
@@ -181,24 +178,25 @@ public class HeartTransplant {
      * equal to the parameter cause.
      */ 
     public Patient[] getPatientsByHeartConditionCause(int cause) {
-        int counter = 0;
-        int x = 0;
-        for(int i = 0; i < patients.length;i++){
-            if(patients[i].getCause() == cause) {
-                counter++;
-            }
+        int count = 0;
+        for(int i = 0; i < patients.length; i++){
+            if(patients[i].getCause() == cause)
+            count++;
         }
-        if(counter == 0){
+
+        if(count == 0){
             return null;
         }
         else{
-            Patient[] array = new Patient[counter];
-            for(int i = 0;i<patients.length;i++){
+            Patient[] array = new Patient[count];
+            int index = 0;
+            for(int i = 0; i < patients.length; i++){
                 if(patients[i].getCause() == cause){
-                    array[x] = patients[i];
-                    x++;
+                    array[index] = patients[i];
+                    index++;
                 }
             }
+
             return array;
         }
         // WRITE YOUR CODE HERE
@@ -257,8 +255,21 @@ public class HeartTransplant {
      * for survivability after the transplant.
      */ 
     public Patient getPatientForTransplant () {
-    
-	// WRITE YOUR CODE HERE
-	return null;
+
+        // WRITE YOUR CODE HERE
+            int counter = 0;
+            double x = 0;
+            for(int i = 0; i < patients.length; i++){
+                if(patients[i].getNeedHeart() == true && patients[i].getUrgency() == 9){
+                double survivabilityRate = this.getSurvivabilityByAge().getRate(patients[i].getAge(), 5) + this.getSurvivabilityByCause().getRate(patients[i].getCause(), 5);
+                survivabilityRate /= 2;
+                if(survivabilityRate > x){
+                    x = survivabilityRate;
+                    counter = i;
+                }
+                }
+            }
+            patients[counter].setNeedHeart(false);
+            return patients[counter];
+        }
     }
-}
